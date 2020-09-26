@@ -82,7 +82,7 @@ void process_memory(void *memptr, size_t bytes_to_calculate) {
         "       incq    %%r8            \n"
         "       decq    %%r9            \n"
         "       jnz     loop            \n"
-        "       movb    %%dl, %0       \n"
+        "       movb    %%dl, %0        \n"
 
         : "=r"(max_difference)
         : "r"(memptr), "r"(bytes_to_calculate)
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
         std::exit(1);
     }
     constexpr ssize_t array_len = 25;
-    auto file_descriptor = ::open(argv[1], O_RDWR);
+    auto file_descriptor = ::open(argv[1], O_RDONLY);
     if (file_descriptor == -1) {
         std::cerr << "error! ::open()" << std::endl;
         std::exit(-2);
@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
     assert(file_size >= array_len);
     auto mapped_ptr = ::mmap(nullptr,
                             file_size,
-                            PROT_READ | PROT_WRITE,
+                            PROT_READ,
                             MAP_SHARED,
                             file_descriptor,
                             0);
