@@ -39,17 +39,17 @@ void process_memory(void *memptr, size_t bytes_to_calculate) {
 
         "       movq    %%mm0, %%rax    \n"
         "       rol     $32, %%rax      \n"
-        "       movd    %%rax, %%mm1    \n"
+        "       movq    %%rax, %%mm1    \n"
         "       pmaxub  %%mm1, %%mm0    \n"
 
         "       movq    %%mm0, %%rax    \n"
         "       rol     $8, %%rax       \n"
-        "       movd    %%rax, %%mm1    \n"
+        "       movq    %%rax, %%mm1    \n"
         "       pmaxub  %%mm1, %%mm0    \n"
 
         "       movq    %%mm0, %%rax    \n"
         "       rol     $16, %%rax      \n"
-        "       movd    %%rax, %%mm1    \n"
+        "       movq    %%rax, %%mm1    \n"
         "       pmaxub  %%mm1, %%mm0    \n"        
 
         "       movq    %%mm0, %%rax    \n"
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
         std::cerr << "error: no input file" <<std::endl;
         std::exit(1);
     }
-    constexpr ssize_t array_len = 25;
+    constexpr off_t array_len = 25;
     auto file_descriptor = ::open(argv[1], O_RDONLY);
     if (file_descriptor == -1) {
         std::cerr << "error! ::open()" << std::endl;
