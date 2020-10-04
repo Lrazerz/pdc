@@ -1,2 +1,2 @@
 # pdc
-Parallel and distributed computing labs
+Parallel and distributed computing labs.
