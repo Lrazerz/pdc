@@ -1,11 +1,14 @@
 #include <iostream>
+#include <cassert> 
+#include <chrono>
+
+extern "C" {
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <cassert> 
-#include <chrono>
+}
 
 
 void process_memory(void *memptr, size_t bytes_to_calculate) {
