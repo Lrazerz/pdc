@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <functional>
 #include <cassert> 
-#include <chrono>
 #include <tuple>
 
 extern "C" {
@@ -34,7 +33,7 @@ process_memory(void *memptr, size_t elements_to_calculate) {
         "       movq    %2, %%r9         \n"
         "       decq    %%r9             \n"
         "       xorq    %%rdx, %%rdx     \n"
-        "loop:                           \n"
+        "lp:                             \n"
         "       movb    (%%r8), %%al     \n"
         "       movb    1(%%r8), %%bl    \n"
         "       subb    %%al, %%bl       \n"
@@ -50,7 +49,7 @@ process_memory(void *memptr, size_t elements_to_calculate) {
         "cond:                           \n"
         "       incq    %%r8             \n"
         "       decq    %%r9             \n"
-        "       jnz     loop             \n"
+        "       jnz     lp               \n"
         "       movb    %%dl, %0         \n"
 
         : "=r"(max_difference)
@@ -112,7 +111,6 @@ process_memory_mmx(void *memptr, size_t elements_to_calculate) {
         "       psubusb %%mm3, %%mm2     \n"
         "       por     %%mm2, %%mm1     \n"
         "       pmaxub  %%mm1, %%mm0     \n"
-        "dbg:                            \n"
         "       movq    %%mm0, (%2)      \n"
 
         :: "r"(memptr), "r"(elements_to_calculate), "r"(differences)
@@ -210,12 +208,19 @@ process_memory_sse(void *memptr, size_t elements_to_calculate) {
     );
 }
 
+
+
 template <typename T>
 void print_result(T func, void *mapped_ptr, size_t array_len) {
-    const auto current_evaluated {func(mapped_ptr, array_len)};
-    std::cout << std::get<1>(current_evaluated) << " "
-              << std::get<0>(current_evaluated) << std::endl;
+    constexpr int REPEATS { 100 };
+    uint64_t sum { 0 };
+    for(int i = 0; i < REPEATS; ++i) {
+        sum += std::get<0>(func(mapped_ptr, array_len));
+    }
+    std::cout << "Result: " << std::get<1>(func(mapped_ptr, array_len))
+              << " avg time - " << sum / REPEATS << std::endl;   
 }
+
 
 
 int main(int argc, char *argv[]) { 
