@@ -75,7 +75,7 @@ process_memory(void *memptr, size_t elements_to_calculate) {
 
 std::tuple<uint64_t, int>
 process_memory_mmx(void *memptr, size_t elements_to_calculate) {
-    volatile static uint8_t differences[8];
+    volatile uint8_t differences[8];
     uint32_t high, low;
     __asm__ __volatile__ (
         "       rdtsc                       \n"
@@ -135,7 +135,7 @@ process_memory_mmx(void *memptr, size_t elements_to_calculate) {
 
 std::tuple<uint64_t, float>
 process_memory_sse(void *memptr, size_t elements_to_calculate) {
-    alignas(16) volatile static float differences[4];
+    alignas(16) volatile float differences[4];
     alignas(16) static constexpr uint8_t abs_mask[16]
     {   
         0xFF, 0xFF, 0xFF, 0x7F,
