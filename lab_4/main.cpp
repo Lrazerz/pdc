@@ -10,17 +10,17 @@ double get_a() {
 
 double taylor_sin(double x, double eps) {
 	x = std::fmod(x, 2 * M_PI);
-    
+
 	int i { 1 };
 	double n { x };
-    double sum { 0 };
-    do {
-        sum += n;
-        n *= -1.0 * x * x / ((2 * i) * (2 * i + 1));
-        ++i;
-    }
-    while (std::fabs(n) > eps);
-    return sum;
+	double sum { 0 };
+	do {
+		sum += n;
+		n *= -1.0 * x * x / ((2 * i) * (2 * i + 1));
+		++i;
+	}
+	while (std::fabs(n) > eps);
+	return sum;
 }
 
 int main(int argc, char **argv) {
