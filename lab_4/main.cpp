@@ -8,7 +8,7 @@ double get_a() {
 	return 2 * (static_cast<double>(std::rand()) / static_cast<double>(RAND_MAX)) - 1;
 }
 
-double taylor_sin(double x, double eps) {
+double taylor_sin(double x, const double eps) {
 	x = std::fmod(x, 2 * M_PI);
 
 	int i { 1 };
